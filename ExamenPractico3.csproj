@@ -43,6 +43,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\DataStructures\StudentBST.cs" />
+    <Compile Include="src\DataStructures\StudentNode.cs" />
     <Compile Include="src\Logic\Algorithms.cs" />
     <Compile Include="src\Logic\Student.cs" />
     <Compile Include="src\Program.cs" />
