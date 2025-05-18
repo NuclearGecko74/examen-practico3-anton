@@ -13,7 +13,7 @@ namespace ExamenPractico3
         static void Main(string[] args)
         {
             List<Student> students = new List<Student>();
-            students.Add(new Student("Antonia", "5212539", 8.7f));
+            students.Add(new Student("Valerie", "5212539", 6.5f));
             students.Add(new Student("Anton", "5112539", 9.7f));
 
             Algorithms.QuickSort(students);
