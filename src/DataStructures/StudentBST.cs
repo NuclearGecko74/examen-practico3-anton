@@ -41,8 +41,54 @@ namespace ExamenPractico3.src.DataStructures
                     StringComparison.Ordinal
                     );
 
-                
+                if(cmp < 0)
+                {
+                    if(temp.left == null)
+                    {
+                        temp.left = newNode;
+                        return true;
+                    }
+                    temp = temp.left;
+                }
+                else
+                {
+                    if (temp.right == null)
+                    {
+                        temp.right = newNode;
+                        return true;
+                    }
+                    temp = temp.right;
+                }
             }
+            return true;
+        }
+
+        public Student FindByMatricula(string matricula)
+        {
+            if (root == null) return null;
+            StudentNode temp = root;
+            while (temp != null)
+            {
+                int cmp = string.Compare(
+                    matricula,
+                    temp.student.matricula,
+                    StringComparison.Ordinal
+                    );
+
+                if(cmp < 0)
+                {
+                    temp = temp.left;
+                } 
+                else if(cmp > 0)
+                {
+                    temp = temp.right;
+                }
+                else
+                {
+                    return temp.student;
+                }
+            }
+            return null;
         }
     }
 }

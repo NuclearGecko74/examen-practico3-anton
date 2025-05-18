@@ -10,8 +10,8 @@ namespace ExamenPractico3.src.DataStructures
     internal class StudentNode
     {
         public Student student;
-        StudentNode left;
-        StudentNode right;
+        public StudentNode left;
+        public StudentNode right;
 
         public StudentNode(Student student)
         {
