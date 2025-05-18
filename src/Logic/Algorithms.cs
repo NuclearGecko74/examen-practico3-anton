@@ -16,23 +16,23 @@ namespace ExamenPractico3.src.Logic
         }
 
         // Search by name
-        public static bool LinearSearchName(List<Student> students, string target)
+        public static Student LinearSearchName(List<Student> students, string target)
         {
             foreach (var student in students)
             {
-                if (student.name == target) return true;
+                if (student.name == target) return student;
             }
-            return false;
+            return null;
         }
 
         // Search by matricula
-        public static bool LinearSearchMatricula(List<Student> students, string target)
+        public static Student LinearSearchMatricula(List<Student> students, string target)
         {
             foreach (var student in students)
             {
-                if (student.matricula == target) return true;
+                if (student.matricula == target) return student;
             }
-            return false;
+            return null;
         }
 
         // Private Methods
