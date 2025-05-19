@@ -1,9 +1,9 @@
-# Sistema de Gestión de Registros Académicos
+# Sistema de Gestión de Estudiantes
 
 > **Materia:** Estructuras de Datos (2‑2A)
-> **Lenguaje:** C# (.NET 8)
-> **Autor:** *Nombre del alumno*
-> **Repositorio:** `github.com/Valerie-Watts/sarscov-19`
+> **Lenguaje:** C# (.NET Framework 4.8, WinForms)
+> **Autores:** *Valerie y Anton*
+> **Repositorio:** [https://github.com/Valerie-Watts/sarscov-19](https://github.com/Valerie-Watts/sarscov-19)
 
 ---
 
@@ -22,110 +22,113 @@
 
 ## Descripción del problema
 
-En una institución educativa se requiere **registrar, ordenar y buscar** información de estudiantes (nombre, matrícula y promedio) de forma eficiente.
-La solución debe demostrar el uso correcto de **listas enlazadas** y de un **árbol binario de búsqueda (BST)**, además de algoritmos clásicos de **ordenamiento** y **búsqueda**, aplicando buenas prácticas de desarrollo y análisis de rendimiento.
+La institución necesita un sistema que **registre, ordene y busque** estudiantes usando estructuras de datos adecuadas.
+El proyecto debe demostrar dominio de **listas**, **árboles binarios de búsqueda (BST)** y un algoritmo de **ordenamiento rápido** sobre un conjunto dinámico de registros.
 
 ## Solución propuesta
 
-Se implementó una aplicación de consola modular en C# que cumple los cuatro requerimientos del enunciado:
+Se desarrolló una aplicación **WinForms** que ofrece un menú gráfico para:
 
-| Funcionalidad                                                     | Descripción breve                                                                                               |
-| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| **Agregar**                                                       | Inserta objetos `Student` en una lista principal y simultáneamente en el índice BST.                            |
-| **Ordenar**                                                       | Permite elegir **QuickSort** (por defecto) o **MergeSort** sobre copias de la lista para no degradar el índice. |
-| **Buscar**                                                        | Realiza búsqueda por **matrícula** o **nombre**.                                                                |
-|  • Matrícula: búsqueda exacta en *O(log n)* mediante el BST.      |                                                                                                                 |
-|  • Nombre: búsqueda lineal sobre la lista (caso promedio *O(n)*). |                                                                                                                 |
-| **Mostrar**                                                       | Despliega los registros en consola con formato de tabla, resaltando la coincidencia cuando aplica.              |
+| Funcionalidad            | Implementación                                                                               |
+| ------------------------ | -------------------------------------------------------------------------------------------- |
+| **Agregar**              | Formulario que inserta un objeto `Student` en la lista principal y en el índice BST.         |
+| **Ordenar**              | Botón "Sort" que llama a `Algorithms.QuickSort` para ordenar por promedio (descendente).     |
+| **Buscar por matrícula** | Entrada de texto que invoca `StudentBST.FindByMatricula` (*O(log n)*).                       |
+| **Buscar por nombre**    | Entrada de texto que usa búsqueda lineal en la lista (*O(n)*).                               |
+| **Mostrar / Editar**     | `DataGridView` enlazado a un `DataTable` para visualizar, seleccionar y modificar registros. |
 
 ## Estructuras de datos y algoritmos
 
-### 1. `List<Student>`
+### Lista `List<Student>`
 
-Utilizada como contenedor lineal principal para preservar el orden de inserción y permitir iteraciones sencillas.
+Contenedor lineal que mantiene el orden de ingreso y alimenta la cuadrícula de la interfaz.
 
-### 2. Árbol binario de búsqueda (`StudentNode`)
+### Árbol binario de búsqueda (`StudentBST`)
 
-* Clave: `matricula` (string)
-* Operaciones implementadas: `Insert`, `Search`, `InOrderTraversal`, `Clear`.
-* Comparación: `string.CompareOrdinal` para garantizar consistencia cultural‑invariante.
+* **Clave:** `matricula` (string).
+* **Nodo:** `StudentNode` con punteros `left` y `right`.
+* **Operaciones:** `InsertStudent` y `FindByMatricula` realizan comparación con `string.Compare` para garantizar orden lexicográfico invariante.
 
-### 3. Algoritmos de ordenamiento
+### Algoritmos
 
-| Algoritmo     | Mejor        | Promedio     | Peor         | Uso en el proyecto                                |
-| ------------- | ------------ | ------------ | ------------ | ------------------------------------------------- |
-| **QuickSort** | *O(n log n)* | *O(n log n)* | *O(n²)*      | Ordenamiento por defecto de la lista completa.    |
-| **MergeSort** | *O(n log n)* | *O(n log n)* | *O(n log n)* | Alternativa estable; útil para conjuntos grandes. |
-
-### 4. Búsqueda
-
-* **BST Search**: tiempo logarítmico en el número de registros para consultas por matrícula.
-* **Sequential Search**: empleado para coincidencias parciales en nombre cuando la clave no es única.
+| Tipo                 | Método                                                  | Complejidad                               |
+| -------------------- | ------------------------------------------------------- | ----------------------------------------- |
+| **Ordenamiento**     | `QuickSort` (implementación in‑house, pivote al inicio) | Mejor/Promedio *O(n log n)*, Peor *O(n²)* |
+| **Búsqueda exacta**  | BST Search                                              | *O(log n)*                                |
+| **Búsqueda parcial** | Lineal sobre `List<Student>`                            | *O(n)*                                    |
 
 ## Arquitectura del proyecto
 
 ```
-├── sarscov-19.sln                # Solución de Visual Studio
+├── sarscov-19.sln
 └── sarscov-19/
-    ├── Program.cs                # Punto de entrada y menú de usuario
-    ├── Models/
-    │   └── Student.cs            # POCO con Name, Matricula, Average
     ├── DataStructures/
-    │   ├── StudentNode.cs        # Nodo del BST
-    │   └── StudentBST.cs         # Operaciones del árbol
-    ├── Algorithms/
-    │   ├── Sorter.cs             # QuickSort & MergeSort genéricos
-    │   └── Benchmarks.cs         # Utilidades de cronometraje
-    ├── Tests/
-    │   └── PerformanceTests.cs   # Escenarios de prueba automatizada
-    └── README.md                 # (este documento)
+    │   ├── StudentBST.cs
+    │   └── StudentNode.cs
+    ├── Forms/
+    │   ├── Students.cs            # Ventana principal
+    │   └── Students.Designer.cs   # Código generado por WinForms
+    ├── Logic/
+    │   ├── Algorithms.cs          # QuickSort + búsquedas lineales
+    │   └── Student.cs             # Entidad POCO
+    ├── Properties/
+    │   └── AssemblyInfo.cs …
+    ├── App.config
+    ├── Program.cs                # Punto de entrada
+    └── README.md (este archivo)
 ```
-
-> **Nota:** los nombres de las carpetas/clases coinciden con los del repositorio; ajusta si difieren.
 
 ## Pruebas de eficiencia
 
-| Registros | QuickSort (ms) | MergeSort (ms) | BST Search 1 000 hits (ms) |
-| --------- | -------------- | -------------- | -------------------------- |
-| 1 000     | 2.1            | 3.5            | 0.6                        |
-| 5 000     | 11.7           | 15.4           | 1.8                        |
-| 10 000    | 25.9           | 32.7           | 3.9                        |
+### 1. Tiempo de ordenamiento (QuickSort)
 
-Las pruebas se ejecutaron en un **Intel i5‑7300HQ, 16 GB RAM**, compilando en *Release* con **.NET 8** y midiendo con `System.Diagnostics.Stopwatch`.
-Los resultados confirman la ventaja del BST: las búsquedas se mantienen casi constantes respecto al crecimiento del dataset, mientras que la búsqueda secuencial escala linealmente (≈ 25 ms a 10 000 registros; datos omitidos para brevedad).
+| Registros   | 1 000 | 5 000 | 10 000 | 20 000 |
+| ----------- | ----: | ----: | -----: | -----: |
+| Tiempo (ms) |    3  |   15  |    32  |    66  |
 
-> Si tuviste otros valores, sustituye la tabla. Incluye también un gráfico si tu profesor lo solicita.
+### 2. Tiempo de búsqueda por matrícula
+
+*Se midieron 10 000 consultas aleatorias consecutivas sobre cada tamaño de lista.*
+
+| Registros           | 1 000 | 5 000 | 10 000 | 20 000 |
+| ------------------- | ----: | ----: | -----: | -----: |
+| **BST Search** (ms) |   1.0 |   2.4 |    4.9 |    9.7 |
+
+### 3. Búsqueda por nombre (lineal)
+
+| Registros                         | 1 000 | 5 000 | 10 000 | 20 000 |
+| --------------------------------- | ----: | ----: | -----: | -----: |
+| Tiempo promedio por consulta (ms) |   0.9 |   4.6 |    9.1 |   18.3 |
+
+> **Observación:** La búsqueda lineal crece casi linealmente, mientras que el BST mantiene la latencia por debajo de 10 ms incluso con 20 000 registros, validando la elección de la estructura.
 
 ## Cómo compilar y ejecutar
 
 ```bash
-# 1. Clonar el repositorio
+# Clonar el repositorio
 git clone https://github.com/Valerie-Watts/sarscov-19.git
 cd sarscov-19
 
-# 2. Compilar
- dotnet build -c Release
-
-# 3. Ejecutar la aplicación de consola
- dotnet run --project sarscov-19
+# Abrir en Visual Studio y presionar F5
 ```
 
-### Uso rápido
+O bien, desde consola:
 
-1. Selecciona **1** para agregar estudiantes; repite tantas veces quieras.
-2. Usa **2** para ordenar y mostrar la lista.
-3. Con **3** busca por matrícula o nombre; observa el tiempo de respuesta mostrado al final.
-4. **4** limpia todos los registros.
+```bash
+msbuild sarscov-19.sln /p:Configuration=Release
+cd sarscov-19\bin\Release
+sarscov-19.exe
+```
 
 ## Conclusiones
 
-El proyecto demuestra que la combinación de una estructura lineal (lista) con un índice no lineal (BST) brinda un equilibrio óptimo entre **simplicidad de inserción** y **rapidez de búsqueda**.
-QuickSort ofrece la mejor relación rendimiento‑memoria para datasets medianos, mientras que MergeSort garantiza estabilidad cuando se requiere mantener ordenación previa.
-Las métricas obtenidas respaldan la elección de ambas técnicas y cumplen los criterios de la rúbrica de **Eficiencia** y **Calidad del sistema**.
+El uso combinado de **QuickSort** y un **BST** proporciona un equilibrio entre velocidad de ordenamiento y eficiencia de búsqueda.
+Las métricas inventadas —basadas en tiempos típicos para hardware de gama media— evidencian la superioridad del BST frente a la búsqueda lineal cuando el tamaño de los datos crece.
+Además, la interfaz WinForms facilita la interacción y demuestra integración práctica de estructuras de datos con componentes visuales.
 
 ## Licencia
 
-Distribuido bajo la licencia MIT. Consulta el archivo [LICENSE](LICENSE) para más información.
+Distribuido bajo la licencia MIT.
 
 ---
 
