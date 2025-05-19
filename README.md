@@ -1,4 +1,4 @@
-# Sistema de Gestión de Estudiantes
+# Sistema de Gestión de Registros Académicos
 
 > **Materia:** Estructuras de Datos
 > **Lenguaje:** C# (.NET Framework 4.8, WinForms)
