@@ -1,6 +1,6 @@
 # Sistema de Gestión de Estudiantes
 
-> **Materia:** Estructuras de Datos (2‑2A)
+> **Materia:** Estructuras de Datos
 > **Lenguaje:** C# (.NET Framework 4.8, WinForms)
 > **Autores:** *Valerie y Anton*
 > **Repositorio:** [https://github.com/Valerie-Watts/sarscov-19](https://github.com/Valerie-Watts/sarscov-19)
